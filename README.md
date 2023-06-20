@@ -210,7 +210,7 @@
 
 4. <details>
     <summary>
-        <b>Determine the level of each node using BFS Or DFS?
+        <b>Determine the level (Distance from the starting node) of each node using BFS Or DFS?
         </b>
     </summary>
      <p>
@@ -325,7 +325,7 @@
 5. <details>
     <summary>
         <b>
-            Determine the level of each node using BFS Or DFS on a Components Graph?
+            Determine the level (Distance from the starting node) of each node using BFS Or DFS on a Components Graph?
         </b>
     </summary>
      <p>
