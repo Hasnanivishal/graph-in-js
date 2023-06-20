@@ -79,7 +79,7 @@
                 return this.adjenacyList.get(node);
               }
               
-              // BSF 
+              // BFS 
               breathSearchFirstTraversal(startingNode) {
                 this.visitedNodes = new Set();
                 this.queue = [];
@@ -124,7 +124,7 @@
         graph.addEdges(0,3);
         graph.addEdges(3,4);
         
-        console.log('**** BSF *****')
+        console.log('**** BFS *****')
         graph.breathSearchFirstTraversal(0);
      ```
      </p>
@@ -158,15 +158,15 @@
             return this.adjenacyList.get(node);
           }
           
-          // DSF 
+          // DFS 
           depthSearchFirstTraversal(startingNode) {
             // create an array for visited nodes
             let visitedNodes = new Set();
             // call the dfs method
-            this.dsfHelper(startingNode, visitedNodes);
+            this.DFSHelper(startingNode, visitedNodes);
           }
           
-          dsfHelper(startingNode, visitedNodes) {
+          DFSHelper(startingNode, visitedNodes) {
               
             // add the startingNode node in visited array 
             visitedNodes.add(startingNode);
@@ -181,7 +181,7 @@
               // if node is not visited
               if(!visitedNodes.has(adjencyNode)) {
                 // use recursion to reach at the depth of the graph
-                this.dsfHelper(adjencyNode, visitedNodes);
+                this.DFSHelper(adjencyNode, visitedNodes);
               }
             }
           }
@@ -200,7 +200,7 @@
         graph.addEdges(0,3);
         graph.addEdges(3,4);
         
-        console.log('**** DSF *****')
+        console.log('**** DFS *****')
         graph.depthSearchFirstTraversal(0);
      ```
      </p>
@@ -235,7 +235,7 @@
         return this.adjenacyList.get(node);
       }
       
-      // BSF 
+      // BFS 
       breathSearchFirstTraversal(startingNode) {
         this.visitedNodes = new Set();
         this.queue = [];
@@ -265,15 +265,15 @@
         }
       }
       
-      // DSF 
+      // DFS 
       depthSearchFirstTraversal(startingNode) {
         // create an array for visited nodes
         let visitedNodes = new Set();
         // call the dfs method
-        this.dsfHelper({startingNode: startingNode, level: 0}, visitedNodes);
+        this.DFSHelper({startingNode: startingNode, level: 0}, visitedNodes);
       }
       
-      dsfHelper(nodeObj, visitedNodes) {
+      DFSHelper(nodeObj, visitedNodes) {
         
         let { startingNode, level }  = nodeObj;
         
@@ -290,7 +290,7 @@
           // if node is not visited
           if(!visitedNodes.has(adjencyNode)) {
             // use recursion to reach at the depth of the graph
-            this.dsfHelper({startingNode: adjencyNode, level: level+1}, visitedNodes);
+            this.DFSHelper({startingNode: adjencyNode, level: level+1}, visitedNodes);
           }
           
         }
@@ -311,10 +311,10 @@
     graph.addEdges(0,3);
     graph.addEdges(3,4);
     
-    console.log('**** BSF *****')
+    console.log('**** BFS *****')
     graph.breathSearchFirstTraversal(0);
     
-    console.log('**** DSF *****')
+    console.log('**** DFS *****')
     graph.depthSearchFirstTraversal(0);
      ```
      </p>
@@ -349,37 +349,37 @@
         return this.adjenacyList.get(node);
       }
       
-      // BSF on Components Graph
-      performBSFOnComponentGraph() {
+      // BFS on Components Graph
+      performBFSOnComponentGraph() {
         // Create a visited nodes array
         this.visitedNodes = new Set();
         
         // Run loop on every keys in map i.e. every node to track unreachable nodes
         for(const node of this.adjenacyList.keys()) {
-          // Run the BSF on non visited nodes only
+          // Run the BFS on non visited nodes only
           if(!this.visitedNodes.has(node)) {
-            // Calls the BSF with key as starting node 
+            // Calls the BFS with key as starting node 
             this.breathSearchFirstTraversal(node);
           }
         }
       }
       
-      // DSF on Components Graph
-      performDSFOnComponentGraph() {
+      // DFS on Components Graph
+      performDFSOnComponentGraph() {
         // Create a visited nodes array
         this.visitedNodes = new Set();
         
         // Run loop on every keys in map i.e. every node to track unreachable nodes
         for(const node of this.adjenacyList.keys()) {
-          // Run the DSF on non visited nodes only
+          // Run the DFS on non visited nodes only
           if(!this.visitedNodes.has(node)) {
-            // Calls the DSF with key as starting node 
-            this.dsfHelper({startingNode: node, level: 0});
+            // Calls the DFS with key as starting node 
+            this.DFSHelper({startingNode: node, level: 0});
           }
         }
       }
     
-      dsfHelper(nodeObj) {
+      DFSHelper(nodeObj) {
         let { startingNode, level }  = nodeObj;
         
         // add the startingNode node in visited array 
@@ -395,12 +395,12 @@
           // if node is not visited
           if(!this.visitedNodes.has(adjencyNode)) {
             // use recursion to reach at the depth of the graph
-            this.dsfHelper({startingNode: adjencyNode, level: level+1}, this.visitedNodes);
+            this.DFSHelper({startingNode: adjencyNode, level: level+1}, this.visitedNodes);
           }
         }
       }
       
-    // BSF 
+    // BFS 
       breathSearchFirstTraversal(startingNode) {
         this.visitedNodes = new Set();
         this.queue = [];
@@ -446,11 +446,11 @@
       graph.addEdges(2,0);
       graph.addEdges(3,4);
     
-        console.log('**** BSF *****')
-        graph.performBSFOnComponentGraph();
+        console.log('**** BFS *****')
+        graph.performBFSOnComponentGraph();
         
-        console.log('**** DSF *****')
-        graph.performDSFOnComponentGraph();
+        console.log('**** DFS *****')
+        graph.performDFSOnComponentGraph();
      ```
      </p>
   </details>
@@ -485,7 +485,7 @@
         return this.adjenacyList.get(node);
       }
       
-      // BSF 
+      // BFS 
       breathSearchFirstTraversal(startingNode) {
         this.visitedNodes = new Set();
         this.queue = [];
@@ -525,15 +525,15 @@
         return false;
       }
       
-      // DSF 
+      // DFS 
       depthSearchFirstTraversal(startingNode) {
         // create an array for visited nodes
         let visitedNodes = new Set();
         // call the dfs method
-        return this.dsfHelper({ startingNode: startingNode, parentNode: -1 }, visitedNodes);
+        return this.DFSHelper({ startingNode: startingNode, parentNode: -1 }, visitedNodes);
       }
       
-      dsfHelper(nodeObj, visitedNodes) {
+      DFSHelper(nodeObj, visitedNodes) {
         
         let { startingNode, parentNode }  = nodeObj;
         
@@ -550,7 +550,7 @@
           // if node is not visited
           if(!visitedNodes.has(adjencyNode)) {
             // use recursion to reach at the depth of the graph
-            let isCyleInRecurssion = this.dsfHelper({ startingNode: adjencyNode, parentNode: startingNode }, visitedNodes);
+            let isCyleInRecurssion = this.DFSHelper({ startingNode: adjencyNode, parentNode: startingNode }, visitedNodes);
             
             
             // check if any nested recursion has cycle break the loop by returning true
@@ -594,7 +594,7 @@
     
     console.log("Graph contains cycles (BFS) -", (isCycleBfs ? 'Yes': 'No'));
     
-    console.log('**** DSF *****')
+    console.log('**** DFS *****')
     let isCycleDfs = graph.depthSearchFirstTraversal(0);
     console.log("Graph contains cycles (DFS) -", (isCycleDfs ? 'Yes': 'No'));
      ```
@@ -631,16 +631,16 @@
         return this.adjenacyList.get(node);
       }
       
-      // BSF on Components Graph
-      performBSFOnComponentGraph() {
+      // BFS on Components Graph
+      performBFSOnComponentGraph() {
         // Create a visited nodes array
         this.visitedNodes = new Set();
         
         // Run loop on every keys in map i.e. every node to track unreachable nodes
         for(const node of this.adjenacyList.keys()) {
-          // Run the BSF on non visited nodes only
+          // Run the BFS on non visited nodes only
           if(!this.visitedNodes.has(node)) {
-            // Calls the BSF with key as starting node 
+            // Calls the BFS with key as starting node 
             if(this.breathSearchFirstTraversal(node) == true) {
               return true;
             }
@@ -650,7 +650,7 @@
         return false;
       }
       
-      // BSF 
+      // BFS 
       breathSearchFirstTraversal(startingNode) {
         this.visitedNodes = new Set();
         this.queue = [];
@@ -690,18 +690,18 @@
         return false;
       }
       
-      // DSF 
-      // DSF on Components Graph
-      performDSFOnComponentGraph() {
+      // DFS 
+      // DFS on Components Graph
+      performDFSOnComponentGraph() {
         // Create a visited nodes array
         this.visitedNodes = new Set();
         
         // Run loop on every keys in map i.e. every node to track unreachable nodes
         for(const node of this.adjenacyList.keys()) {
-          // Run the DSF on non visited nodes only
+          // Run the DFS on non visited nodes only
           if(!this.visitedNodes.has(node)) {
-            // Calls the DSF with key as starting node 
-            if(this.dsfHelper({startingNode: node, parentNode: -1}) == true) {
+            // Calls the DFS with key as starting node 
+            if(this.DFSHelper({startingNode: node, parentNode: -1}) == true) {
               return true;
             }
           }
@@ -710,7 +710,7 @@
         return false;
       }
       
-      dsfHelper(nodeObj) {
+      DFSHelper(nodeObj) {
         
         let { startingNode, parentNode }  = nodeObj;
         
@@ -727,7 +727,7 @@
           // if node is not visited
           if(!this.visitedNodes.has(adjencyNode)) {
             // use recursion to reach at the depth of the graph
-            let isCyleInRecurssion = this.dsfHelper({ startingNode: adjencyNode, parentNode: startingNode });
+            let isCyleInRecurssion = this.DFSHelper({ startingNode: adjencyNode, parentNode: startingNode });
             
             
             // check if any nested recursion has cycle break the loop by returning true
@@ -773,12 +773,12 @@
     graph.addEdges(8,6);
     
     console.log('**** BFS *****')
-    let isCycleBfs = graph.performBSFOnComponentGraph();
+    let isCycleBfs = graph.performBFSOnComponentGraph();
     
     console.log("Graph contains cycles (BFS) -", (isCycleBfs ? 'Yes': 'No'));
     
-    console.log('**** DSF *****')
-    let isCycleDfs = graph.performDSFOnComponentGraph();
+    console.log('**** DFS *****')
+    let isCycleDfs = graph.performDFSOnComponentGraph();
     console.log("Graph contains cycles (DFS) -", (isCycleDfs ? 'Yes': 'No'));
      ```
      </p>
