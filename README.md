@@ -166,7 +166,8 @@
             this.dsfHelper(startingNode, visitedNodes);
           }
           
-          dsfHelper(nodeObj, visitedNodes) {
+          dsfHelper(startingNode, visitedNodes) {
+              
             // add the startingNode node in visited array 
             visitedNodes.add(startingNode);
             
@@ -204,6 +205,8 @@
      ```
      </p>
   </details>
+
+---
 
 4. <details>
     <summary>
@@ -317,7 +320,61 @@
      </p>
   </details>
 
+  ---
 
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
 
 
 
