@@ -603,6 +603,351 @@
 
 ---
 
+7. <details>
+    <summary>
+        <b>
+            Check if the given a Components undirected graph is having any cycle or not?
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     class Graph {
+    
+      constructor() {
+        this.adjenacyList = new Map();
+      }  
+    
+      addVertex(node) {
+        this.adjenacyList.set(node, []);
+      }
+    
+      addEdges(node1, node2){
+        this.adjenacyList.get(node1).push(node2);
+        this.adjenacyList.get(node2).push(node1);
+      }
+    
+      getEdges(node) {
+        return this.adjenacyList.get(node);
+      }
+      
+      // BSF on Components Graph
+      performBSFOnComponentGraph() {
+        // Create a visited nodes array
+        this.visitedNodes = new Set();
+        
+        // Run loop on every keys in map i.e. every node to track unreachable nodes
+        for(const node of this.adjenacyList.keys()) {
+          // Run the BSF on non visited nodes only
+          if(!this.visitedNodes.has(node)) {
+            // Calls the BSF with key as starting node 
+            if(this.breathSearchFirstTraversal(node) == true) {
+              return true;
+            }
+          }
+        }
+        
+        return false;
+      }
+      
+      // BSF 
+      breathSearchFirstTraversal(startingNode) {
+        this.visitedNodes = new Set();
+        this.queue = [];
+        
+        // add starting node
+        this.visitedNodes.add(startingNode);
+        
+        this.queue.push({ currentNode: startingNode, parentNode: -1 });
+        
+        
+        while(this.queue.length != 0) {
+          // get the first element from queue
+          let { currentNode, parentNode }  = this.queue.shift();
+          
+          console.log("Node - " + currentNode + ", parentNode - " + parentNode);
+          let adjencyNodes = this.adjenacyList.get(currentNode);
+          
+          for(let adjencyNode of adjencyNodes) 
+          {
+            if(!this.visitedNodes.has(adjencyNode)) {
+                // push into visited Array
+                this.visitedNodes.add(adjencyNode);
+                // push into queue to be scaned further
+                this.queue.push({currentNode: adjencyNode, parentNode: currentNode});
+            } 
+            
+            
+            // Check if the visited node is not the parent of the current node
+            else if (parentNode != adjencyNode) {
+              return true;
+            }
+            
+          }
+        }
+        
+        // return false if no cycles found
+        return false;
+      }
+      
+      // DSF 
+      // DSF on Components Graph
+      performDSFOnComponentGraph() {
+        // Create a visited nodes array
+        this.visitedNodes = new Set();
+        
+        // Run loop on every keys in map i.e. every node to track unreachable nodes
+        for(const node of this.adjenacyList.keys()) {
+          // Run the DSF on non visited nodes only
+          if(!this.visitedNodes.has(node)) {
+            // Calls the DSF with key as starting node 
+            if(this.dsfHelper({startingNode: node, parentNode: -1}) == true) {
+              return true;
+            }
+          }
+        }
+        
+        return false;
+      }
+      
+      dsfHelper(nodeObj) {
+        
+        let { startingNode, parentNode }  = nodeObj;
+        
+        // add the startingNode node in visited array 
+        this.visitedNodes.add(startingNode);
+        
+        console.log("Node - " + startingNode + ", parentNode - " + parentNode);
+        
+        let adjencyNodes = this.adjenacyList.get(startingNode);
+        
+        // iterate over all the adjency nodes of the starting nodes
+        for(let adjencyNode of adjencyNodes) {
+          
+          // if node is not visited
+          if(!this.visitedNodes.has(adjencyNode)) {
+            // use recursion to reach at the depth of the graph
+            let isCyleInRecurssion = this.dsfHelper({ startingNode: adjencyNode, parentNode: startingNode });
+            
+            
+            // check if any nested recursion has cycle break the loop by returning true
+            if (isCyleInRecurssion == true) return true;
+            
+    
+          }
+          
+          
+          // Check if the visited node is not the parent of the current node
+          else if (parentNode != adjencyNode) {
+            return true;
+          }
+          
+        }
+        
+        // return false if no cycles found
+        return false;
+      }
+    }
+    
+    let graph = new Graph();
+    
+    graph.addVertex(0);
+    graph.addVertex(1);
+    graph.addVertex(2);
+    graph.addVertex(3);
+    graph.addVertex(4);
+    graph.addVertex(5);
+    
+    graph.addVertex(6);
+    graph.addVertex(7);
+    graph.addVertex(8);
+    
+    graph.addEdges(0,1); 
+    graph.addEdges(1,2);
+    graph.addEdges(2,3);
+    graph.addEdges(0,4);
+    graph.addEdges(4,5);
+    
+    graph.addEdges(6,7);
+    graph.addEdges(7,8);
+    graph.addEdges(8,6);
+    
+    console.log('**** BFS *****')
+    let isCycleBfs = graph.performBSFOnComponentGraph();
+    
+    console.log("Graph contains cycles (BFS) -", (isCycleBfs ? 'Yes': 'No'));
+    
+    console.log('**** DSF *****')
+    let isCycleDfs = graph.performDSFOnComponentGraph();
+    console.log("Graph contains cycles (DFS) -", (isCycleDfs ? 'Yes': 'No'));
+     ```
+     </p>
+  </details>
+
+---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+
+  ---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+
+  ---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+
+  ---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+
+  ---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+
+  ---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+
+  ---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+
+  ---
+
+5. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+
+  ---
+
 5. <details>
     <summary>
         <b>
