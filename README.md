@@ -457,14 +457,146 @@
 
 ---
 
-5. <details>
+6. <details>
     <summary>
         <b>
+            Check if the given undirected graph is having any cycle or not?
         </b>
     </summary>
      <p>
        
     ```javascript
+     class Graph {
+    
+      constructor() {
+        this.adjenacyList = new Map();
+      }  
+    
+      addVertex(node) {
+        this.adjenacyList.set(node, []);
+      }
+    
+      addEdges(node1, node2){
+        this.adjenacyList.get(node1).push(node2);
+        this.adjenacyList.get(node2).push(node1);
+      }
+    
+      getEdges(node) {
+        return this.adjenacyList.get(node);
+      }
+      
+      // BSF 
+      breathSearchFirstTraversal(startingNode) {
+        this.visitedNodes = new Set();
+        this.queue = [];
+        
+        // add starting node
+        this.visitedNodes.add(startingNode);
+        
+        this.queue.push({ currentNode: startingNode, parentNode: -1 });
+        
+        
+        while(this.queue.length != 0) {
+          // get the first element from queue
+          let { currentNode, parentNode }  = this.queue.shift();
+          
+          console.log("Node - " + currentNode + ", parentNode - " + parentNode);
+          let adjencyNodes = this.adjenacyList.get(currentNode);
+          
+          for(let adjencyNode of adjencyNodes) 
+          {
+            if(!this.visitedNodes.has(adjencyNode)) {
+                // push into visited Array
+                this.visitedNodes.add(adjencyNode);
+                // push into queue to be scaned further
+                this.queue.push({currentNode: adjencyNode, parentNode: currentNode});
+            } 
+            
+            
+            // Check if the visited node is not the parent of the current node
+            else if (parentNode != adjencyNode) {
+              return true;
+            }
+            
+          }
+        }
+        
+        // return false if no cycles found
+        return false;
+      }
+      
+      // DSF 
+      depthSearchFirstTraversal(startingNode) {
+        // create an array for visited nodes
+        let visitedNodes = new Set();
+        // call the dfs method
+        return this.dsfHelper({ startingNode: startingNode, parentNode: -1 }, visitedNodes);
+      }
+      
+      dsfHelper(nodeObj, visitedNodes) {
+        
+        let { startingNode, parentNode }  = nodeObj;
+        
+        // add the startingNode node in visited array 
+        visitedNodes.add(startingNode);
+        
+        console.log("Node - " + startingNode + ", parentNode - " + parentNode);
+        
+        let adjencyNodes = this.adjenacyList.get(startingNode);
+        
+        // iterate over all the adjency nodes of the starting nodes
+        for(let adjencyNode of adjencyNodes) {
+          
+          // if node is not visited
+          if(!visitedNodes.has(adjencyNode)) {
+            // use recursion to reach at the depth of the graph
+            let isCyleInRecurssion = this.dsfHelper({ startingNode: adjencyNode, parentNode: startingNode }, visitedNodes);
+            
+            
+            // check if any nested recursion has cycle break the loop by returning true
+            if (isCyleInRecurssion == true) return true;
+            
+    
+          }
+          
+          
+          // Check if the visited node is not the parent of the current node
+          else if (parentNode != adjencyNode) {
+            return true;
+          }
+          
+        }
+        
+        // return false if no cycles found
+        return false;
+      }
+    }
+    
+    let graph = new Graph();
+    
+    graph.addVertex(0);
+    graph.addVertex(1);
+    graph.addVertex(2);
+    graph.addVertex(3);
+    graph.addVertex(4);
+    graph.addVertex(5);
+    
+    
+    graph.addEdges(0,1); 
+    graph.addEdges(1,2);
+    graph.addEdges(2,3);
+    graph.addEdges(0,4);
+    graph.addEdges(4,5);
+    graph.addEdges(5,3);
+    
+    console.log('**** BFS *****')
+    let isCycleBfs = graph.breathSearchFirstTraversal(0);
+    
+    console.log("Graph contains cycles (BFS) -", (isCycleBfs ? 'Yes': 'No'));
+    
+    console.log('**** DSF *****')
+    let isCycleDfs = graph.depthSearchFirstTraversal(0);
+    console.log("Graph contains cycles (DFS) -", (isCycleDfs ? 'Yes': 'No'));
      ```
      </p>
   </details>
