@@ -10,20 +10,20 @@
     ```javascript
     class Graph {
       constructor() {
-        this.adjenacyList = new Map();
+        this.adjacencyList = new Map();
       }  
 
       addVertex(node) {
-        this.adjenacyList.set(node, []);
+        this.adjacencyList.set(node, []);
       }
 
       addEdges(node1, node2){
-        this.adjenacyList.get(node1).push(node2);
-        this.adjenacyList.get(node2).push(node1);
+        this.adjacencyList.get(node1).push(node2);
+        this.adjacencyList.get(node2).push(node1);
       }
 
       getEdges(node) {
-        return this.adjenacyList.get(node);
+        return this.adjacencyList.get(node);
       }
     }
 
@@ -63,20 +63,20 @@
     ```javascript
            class Graph {
               constructor() {
-                this.adjenacyList = new Map();
+                this.adjacencyList = new Map();
               }  
             
               addVertex(node) {
-                this.adjenacyList.set(node, []);
+                this.adjacencyList.set(node, []);
               }
             
               addEdges(node1, node2){
-                this.adjenacyList.get(node1).push(node2);
-                this.adjenacyList.get(node2).push(node1);
+                this.adjacencyList.get(node1).push(node2);
+                this.adjacencyList.get(node2).push(node1);
               }
             
               getEdges(node) {
-                return this.adjenacyList.get(node);
+                return this.adjacencyList.get(node);
               }
               
               // BFS 
@@ -95,7 +95,7 @@
                   let currentNode = this.queue.shift();
                   
                   console.log("Node - " + currentNode + ", " );
-                  let adjencyNodes = this.adjenacyList.get(currentNode);
+                  let adjencyNodes = this.adjacencyList.get(currentNode);
                   
                   for(let adjencyNode of adjencyNodes) 
                   {
@@ -142,20 +142,20 @@
     ```javascript
        class Graph {
           constructor() {
-            this.adjenacyList = new Map();
+            this.adjacencyList = new Map();
           }  
         
           addVertex(node) {
-            this.adjenacyList.set(node, []);
+            this.adjacencyList.set(node, []);
           }
         
           addEdges(node1, node2){
-            this.adjenacyList.get(node1).push(node2);
-            this.adjenacyList.get(node2).push(node1);
+            this.adjacencyList.get(node1).push(node2);
+            this.adjacencyList.get(node2).push(node1);
           }
         
           getEdges(node) {
-            return this.adjenacyList.get(node);
+            return this.adjacencyList.get(node);
           }
           
           // DFS 
@@ -173,7 +173,7 @@
             
             console.log("Node - " + startingNode + ", ");
             
-            let adjencyNodes = this.adjenacyList.get(startingNode);
+            let adjencyNodes = this.adjacencyList.get(startingNode);
             
             // iterate over all the adjency nodes of the starting nodes
             for(let adjencyNode of adjencyNodes) {
@@ -219,20 +219,20 @@
      class Graph {
 
       constructor() {
-        this.adjenacyList = new Map();
+        this.adjacencyList = new Map();
       }  
     
       addVertex(node) {
-        this.adjenacyList.set(node, []);
+        this.adjacencyList.set(node, []);
       }
     
       addEdges(node1, node2){
-        this.adjenacyList.get(node1).push(node2);
-        this.adjenacyList.get(node2).push(node1);
+        this.adjacencyList.get(node1).push(node2);
+        this.adjacencyList.get(node2).push(node1);
       }
     
       getEdges(node) {
-        return this.adjenacyList.get(node);
+        return this.adjacencyList.get(node);
       }
       
       // BFS 
@@ -251,7 +251,7 @@
           let { currentNode, level }  = this.queue.shift();
           
           console.log("Node - " + currentNode + ", level - " + level);
-          let adjencyNodes = this.adjenacyList.get(currentNode);
+          let adjencyNodes = this.adjacencyList.get(currentNode);
           
           for(let adjencyNode of adjencyNodes) 
           {
@@ -282,7 +282,7 @@
         
         console.log("Node - " + startingNode + ", level - " + level);
         
-        let adjencyNodes = this.adjenacyList.get(startingNode);
+        let adjencyNodes = this.adjacencyList.get(startingNode);
         
         // iterate over all the adjency nodes of the starting nodes
         for(let adjencyNode of adjencyNodes) {
@@ -333,20 +333,20 @@
     ```javascript
     class Graph {
       constructor() {
-        this.adjenacyList = new Map();
+        this.adjacencyList = new Map();
       }  
     
       addVertex(node) {
-        this.adjenacyList.set(node, []);
+        this.adjacencyList.set(node, []);
       }
     
       addEdges(node1, node2){
-        this.adjenacyList.get(node1).push(node2);
-        this.adjenacyList.get(node2).push(node1);
+        this.adjacencyList.get(node1).push(node2);
+        this.adjacencyList.get(node2).push(node1);
       }
     
       getEdges(node) {
-        return this.adjenacyList.get(node);
+        return this.adjacencyList.get(node);
       }
       
       // BFS on Components Graph
@@ -355,7 +355,7 @@
         this.visitedNodes = new Set();
         
         // Run loop on every keys in map i.e. every node to track unreachable nodes
-        for(const node of this.adjenacyList.keys()) {
+        for(const node of this.adjacencyList.keys()) {
           // Run the BFS on non visited nodes only
           if(!this.visitedNodes.has(node)) {
             // Calls the BFS with key as starting node 
@@ -370,7 +370,7 @@
         this.visitedNodes = new Set();
         
         // Run loop on every keys in map i.e. every node to track unreachable nodes
-        for(const node of this.adjenacyList.keys()) {
+        for(const node of this.adjacencyList.keys()) {
           // Run the DFS on non visited nodes only
           if(!this.visitedNodes.has(node)) {
             // Calls the DFS with key as starting node 
@@ -387,7 +387,7 @@
         
         console.log("Node - " + startingNode + ", level - " + level);
         
-        let adjencyNodes = this.adjenacyList.get(startingNode);
+        let adjencyNodes = this.adjacencyList.get(startingNode);
         
         // iterate over all the adjency nodes of the starting nodes
         for(let adjencyNode of adjencyNodes) {
@@ -416,7 +416,7 @@
           let { currentNode, level }  = this.queue.shift();
           
           console.log("Node - " + currentNode + ", level - " + level);
-          let adjencyNodes = this.adjenacyList.get(currentNode);
+          let adjencyNodes = this.adjacencyList.get(currentNode);
           
           for(let adjencyNode of adjencyNodes) 
           {
@@ -469,20 +469,20 @@
      class Graph {
     
       constructor() {
-        this.adjenacyList = new Map();
+        this.adjacencyList = new Map();
       }  
     
       addVertex(node) {
-        this.adjenacyList.set(node, []);
+        this.adjacencyList.set(node, []);
       }
     
       addEdges(node1, node2){
-        this.adjenacyList.get(node1).push(node2);
-        this.adjenacyList.get(node2).push(node1);
+        this.adjacencyList.get(node1).push(node2);
+        this.adjacencyList.get(node2).push(node1);
       }
     
       getEdges(node) {
-        return this.adjenacyList.get(node);
+        return this.adjacencyList.get(node);
       }
       
       // BFS 
@@ -501,7 +501,7 @@
           let { currentNode, parentNode }  = this.queue.shift();
           
           console.log("Node - " + currentNode + ", parentNode - " + parentNode);
-          let adjencyNodes = this.adjenacyList.get(currentNode);
+          let adjencyNodes = this.adjacencyList.get(currentNode);
           
           for(let adjencyNode of adjencyNodes) 
           {
@@ -542,7 +542,7 @@
         
         console.log("Node - " + startingNode + ", parentNode - " + parentNode);
         
-        let adjencyNodes = this.adjenacyList.get(startingNode);
+        let adjencyNodes = this.adjacencyList.get(startingNode);
         
         // iterate over all the adjency nodes of the starting nodes
         for(let adjencyNode of adjencyNodes) {
@@ -615,20 +615,20 @@
      class Graph {
     
       constructor() {
-        this.adjenacyList = new Map();
+        this.adjacencyList = new Map();
       }  
     
       addVertex(node) {
-        this.adjenacyList.set(node, []);
+        this.adjacencyList.set(node, []);
       }
     
       addEdges(node1, node2){
-        this.adjenacyList.get(node1).push(node2);
-        this.adjenacyList.get(node2).push(node1);
+        this.adjacencyList.get(node1).push(node2);
+        this.adjacencyList.get(node2).push(node1);
       }
     
       getEdges(node) {
-        return this.adjenacyList.get(node);
+        return this.adjacencyList.get(node);
       }
       
       // BFS on Components Graph
@@ -637,7 +637,7 @@
         this.visitedNodes = new Set();
         
         // Run loop on every keys in map i.e. every node to track unreachable nodes
-        for(const node of this.adjenacyList.keys()) {
+        for(const node of this.adjacencyList.keys()) {
           // Run the BFS on non visited nodes only
           if(!this.visitedNodes.has(node)) {
             // Calls the BFS with key as starting node 
@@ -666,7 +666,7 @@
           let { currentNode, parentNode }  = this.queue.shift();
           
           console.log("Node - " + currentNode + ", parentNode - " + parentNode);
-          let adjencyNodes = this.adjenacyList.get(currentNode);
+          let adjencyNodes = this.adjacencyList.get(currentNode);
           
           for(let adjencyNode of adjencyNodes) 
           {
@@ -697,7 +697,7 @@
         this.visitedNodes = new Set();
         
         // Run loop on every keys in map i.e. every node to track unreachable nodes
-        for(const node of this.adjenacyList.keys()) {
+        for(const node of this.adjacencyList.keys()) {
           // Run the DFS on non visited nodes only
           if(!this.visitedNodes.has(node)) {
             // Calls the DFS with key as starting node 
@@ -719,7 +719,7 @@
         
         console.log("Node - " + startingNode + ", parentNode - " + parentNode);
         
-        let adjencyNodes = this.adjenacyList.get(startingNode);
+        let adjencyNodes = this.adjacencyList.get(startingNode);
         
         // iterate over all the adjency nodes of the starting nodes
         for(let adjencyNode of adjencyNodes) {
@@ -798,19 +798,19 @@
      class Graph {
 
       constructor() {
-        this.adjenacyList = new Map();
+        this.adjacencyList = new Map();
       }  
     
       addVertex(node) {
-        this.adjenacyList.set(node, []);
+        this.adjacencyList.set(node, []);
       }
     
       addEdges(node1, node2){
-        this.adjenacyList.get(node1).push(node2);
+        this.adjacencyList.get(node1).push(node2);
       }
     
       getEdges(node) {
-        return this.adjenacyList.get(node);
+        return this.adjacencyList.get(node);
       }
     
       // Only DFS as BFS will not work on directed graph to detect cycles
@@ -823,7 +823,7 @@
         this.visitedPath = new Set();
         
         // Run loop on every keys in map i.e. every node to track unreachable nodes
-        for(const node of this.adjenacyList.keys()) {
+        for(const node of this.adjacencyList.keys()) {
           
           // Run the DFS on non visited nodes only
           if(!this.visitedNodes.has(node)) {
@@ -848,7 +848,7 @@
         
         console.log("Node - " + startingNode + ", ");
         
-        let adjencyNodes = this.adjenacyList.get(startingNode);
+        let adjencyNodes = this.adjacencyList.get(startingNode);
         
         // iterate over all the adjency nodes of the starting nodes
         for(let adjencyNode of adjencyNodes) {
@@ -912,7 +912,7 @@
 9. <details>
     <summary>
         <b>
-            Perform a BFS Traversal on a Matrix using Graph approach
+            Perform a BFS Traversal on a Matrix using Graph approach?
         </b>
     </summary>
      <p>
@@ -1003,7 +1003,7 @@
 10. <details>
     <summary>
         <b>
-            Perform a DFS Traversal on a Matrix using Graph approach
+            Perform a DFS Traversal on a Matrix using Graph approach?
         </b>
     </summary>
      <p>
@@ -1077,14 +1077,132 @@
 
   ---
 
-5. <details>
+11. <details>
     <summary>
         <b>
+            Check if the given undirected graph is Bipartite?
         </b>
     </summary>
      <p>
        
     ```javascript
+     class Graph {
+    
+      constructor() {
+        this.adjacencyList = new Map();
+      }  
+    
+      addVertex(node) {
+        this.adjacencyList.set(node, []);
+      }
+    
+      addEdges(node1, node2){
+        this.adjacencyList.get(node1).push(node2);
+        this.adjacencyList.get(node2).push(node1);
+      }
+    
+      getEdges(node) {
+        return this.adjacencyList.get(node);
+      }
+      
+      // BFS 
+      isBipartiteBFS(startingNode) {
+        // Fill all the visited nodes with default color -1
+        this.visitedNodes = new Array(this.adjacencyList.size).fill(-1);
+        
+        this.queue = [];
+        
+        // set color of starting node as false
+        this.visitedNodes[startingNode] = 0;
+        
+        this.queue.push(startingNode);
+        
+        while(this.queue.length != 0) {
+          // get the first element from queue
+          let currentNode  = this.queue.shift();
+          let adjencyNodes = this.adjacencyList.get(currentNode);
+    
+          for(let adjencyNode of adjencyNodes) 
+          {
+            // if color of node is not set
+            if(this.visitedNodes[adjencyNode] == -1) {
+                // invert the color of the node from its adjacent
+                this.visitedNodes[adjencyNode] = 1 - this.visitedNodes[currentNode];
+                // push into queue to be scaned further
+                this.queue.push(adjencyNode);
+            }
+            // If the color of current node and adjency node is same means not bipartite
+            else if (this.visitedNodes[adjencyNode] == this.visitedNodes[currentNode]) {
+                return false;
+            }
+          }
+        }
+        
+        // if no conditions meets return true
+        return true;
+      }
+      
+      // DFS 
+      isBipartiteDFS(startingNode) {
+        // Fill all the visited nodes with default color -1
+        this.visitedNodes = new Array(this.adjacencyList.size).fill(-1);
+        
+        // call the dfs method with starting color value
+        return this.DFSHelper(startingNode, 0);
+      }
+      
+      // DFS Algo
+      DFSHelper(startingNode, color) {
+        // set color of starting node to the color value
+        this.visitedNodes[startingNode] = color;
+        
+        let adjencyNodes = this.adjacencyList.get(startingNode);
+    
+        // iterate over all the adjency nodes of the starting nodes
+        for(let adjencyNode of adjencyNodes) {
+          // if node is not visited
+          if(this.visitedNodes[adjencyNode] == -1) {
+            // call the dfs helper for this node with inverted color value
+            // return false if any recursion stack returns false
+             if (this.DFSHelper(adjencyNode, 1 - color) == false) {
+               return false;
+             };
+          }
+          // Check if the visited node have same color as of its adjacent
+          else if (this.visitedNodes[adjencyNode] == color) {
+            return false;
+          }
+          
+        }
+        
+        // if no conditions meets return true
+        return true;
+      }
+    }
+    
+    let graph = new Graph();
+    
+    graph.addVertex(0);
+    graph.addVertex(1);
+    graph.addVertex(2);
+    graph.addVertex(3);
+    graph.addVertex(4);
+    graph.addVertex(5);
+    
+    graph.addEdges(0,1); 
+    graph.addEdges(1,2);
+    graph.addEdges(2,3);
+    graph.addEdges(3,4);
+    graph.addEdges(4,5);
+    graph.addEdges(5,1);
+    
+    console.log('**** BFS *****')
+    let isBipartiteBfs = graph.isBipartiteBFS(0);
+    console.log("Is Graph Bipartite -", (isBipartiteBfs ? 'Yes': 'No'));
+    
+    console.log('**** DFS *****')
+    let isBipartiteDfs = graph.isBipartiteDFS(0);
+    console.log("Is Graph Bipartite -", (isBipartiteDfs ? 'Yes': 'No'));
      ```
      </p>
   </details>
