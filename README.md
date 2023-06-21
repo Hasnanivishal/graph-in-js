@@ -786,21 +786,130 @@
 
 ---
 
-5. <details>
+8. <details>
     <summary>
         <b>
+            Check if the given a Components Directed graph is having any cycle or not?
         </b>
     </summary>
      <p>
        
     ```javascript
+     class Graph {
+
+      constructor() {
+        this.adjenacyList = new Map();
+      }  
+    
+      addVertex(node) {
+        this.adjenacyList.set(node, []);
+      }
+    
+      addEdges(node1, node2){
+        this.adjenacyList.get(node1).push(node2);
+      }
+    
+      getEdges(node) {
+        return this.adjenacyList.get(node);
+      }
+    
+      // Only DFS as BFS will not work on directed graph to detect cycles
+      performDFSOnComponentGraph() {
+          
+        // Create a visited nodes array
+        this.visitedNodes = new Set();
+        
+        // create an array for keeping information about the current path    
+        this.visitedPath = new Set();
+        
+        // Run loop on every keys in map i.e. every node to track unreachable nodes
+        for(const node of this.adjenacyList.keys()) {
+          
+          // Run the DFS on non visited nodes only
+          if(!this.visitedNodes.has(node)) {
+            
+            // Calls the DFS with key as starting node 
+            if(this.DFSHelper(node) == true) {
+              return true;
+            }
+            
+          }
+        }
+        
+        return false;
+      }
+      
+      DFSHelper(startingNode) {
+        
+        // add the startingNode node in visited array 
+        this.visitedNodes.add(startingNode);
+            
+        this.visitedPath.add(startingNode);
+        
+        console.log("Node - " + startingNode + ", ");
+        
+        let adjencyNodes = this.adjenacyList.get(startingNode);
+        
+        // iterate over all the adjency nodes of the starting nodes
+        for(let adjencyNode of adjencyNodes) {
+          // if node is not visited
+          if(!this.visitedNodes.has(adjencyNode)) {
+            // use recursion to reach at the depth of the graph
+            let isCyleInRecurssion = this.DFSHelper(adjencyNode);
+            // check if any nested recursion has cycle break the loop by returning true
+            if (isCyleInRecurssion == true) {
+              return true;
+            };
+            
+          }
+          // Check if the visited node is present in the visitedPath i.e. current path
+          else if (this.visitedPath.has(adjencyNode)) {
+            return true;
+          }
+        }
+        
+        // return false if no cycles found, remove it from visitedPath
+        this.visitedPath.delete(startingNode);
+        return false;
+      }
+    }
+    
+    let graph = new Graph();
+    
+        graph.addVertex(0);
+        graph.addVertex(1);
+        graph.addVertex(2);
+        graph.addVertex(3);
+        graph.addVertex(4);
+        
+        graph.addVertex(5);
+        graph.addVertex(6);
+        
+        graph.addVertex(7);
+        graph.addVertex(8);
+        graph.addVertex(9);
+        
+        graph.addEdges(0,1);
+        graph.addEdges(1,2);
+        graph.addEdges(2,3);
+        graph.addEdges(3,4);
+        
+        graph.addEdges(5,6);
+        
+        graph.addEdges(7,8);
+        graph.addEdges(8,9);
+        graph.addEdges(9,7);
+    
+    console.log('**** DFS *****')
+    let isCycleDfs = graph.performDFSOnComponentGraph();
+    console.log("Graph contains cycles (DFS) -", (isCycleDfs ? 'Yes': 'No'));
      ```
      </p>
   </details>
 
   ---
 
-5. <details>
+9. <details>
     <summary>
         <b>
         </b>
