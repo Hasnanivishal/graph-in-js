@@ -912,11 +912,88 @@
 9. <details>
     <summary>
         <b>
+            Perform a BFS Traversal on a Matrix using Graph approach
         </b>
     </summary>
      <p>
        
     ```javascript
+        class Graph {
+          constructor(matrix) {
+            // get the matrix
+            this.matrix = matrix;
+            this.rows = matrix.length;
+            this.cols = matrix[0].length;
+            // define the same size matrix for visited entries
+            this.visited = new Array(this.rows).fill(false).
+                          map(() => new Array(this.cols).fill(false));
+          }  
+          
+          isValidCell(row, col) {
+            // lower and upper bound for neighbour's
+            return row >= 0 && row < this.rows && col >= 0 && col < this.cols;
+          }
+          
+          getAdjacentCells(row, col) {
+            // create an array fro adjacent cells
+            const adjacentCells = [];
+            
+            // iterate over all possible 8 direction of a cell
+            for(let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+              for(let deltaCol = -1; deltaCol <=1; deltaCol++) {
+                const neighbourRow = row + deltaRow;
+                const neighbourCol = col + deltaCol;
+                
+                // validate if its a valid node, it is not visited, 
+                if(this.isValidCell(neighbourRow, neighbourCol) && !this.visited[neighbourRow][neighbourCol]) {
+                  // push the cell to the adjacent cells array
+                  adjacentCells.push([neighbourRow, neighbourCol])
+                }
+              }
+            }
+            
+            // return the adjacent cell array
+            return adjacentCells;
+          }
+                  
+          // BFS 
+          breathSearchFirstTraversal(startingRow, startingCol) {
+            // create a queue to process the cells
+            this.queue = [];
+            
+            // push the cell to queue and mark it as visited in visited matrix
+            this.queue.push([startingRow, startingCol]);
+            this.visited[startingRow][startingCol] = true;
+            
+            while(this.queue.length > 0) {
+              // get the first element from queue
+              let [row, col]  = this.queue.shift();
+              
+              console.log(`Visiting cell: [${row}, ${col}]`);
+              
+              // get the adjacent cells for this cell i.e. the filtered one
+              const adjacentCells = this.getAdjacentCells(row, col);
+              
+              // push the cell to queue and mark them as visited
+              for(let [adjRow, adjCol] of adjacentCells) 
+              {
+                this.visited[adjRow][adjCol] = true;
+                this.queue.push([adjRow, adjCol]);
+              }
+            }
+          }
+        }
+        
+        const matrix = [
+          [0, 1, 0],
+          [1, 0, 1],
+          [1, 1, 0],
+          [0, 1, 1]
+        ];
+        
+        let graph = new Graph(matrix);
+        console.log('**** BFS *****')
+        graph.breathSearchFirstTraversal(0,0);
      ```
      </p>
   </details>
