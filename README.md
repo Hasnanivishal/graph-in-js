@@ -1000,14 +1000,76 @@
 
   ---
 
-5. <details>
+10. <details>
     <summary>
         <b>
+            Perform a DFS Traversal on a Matrix using Graph approach
         </b>
     </summary>
      <p>
        
     ```javascript
+    class Graph {
+      constructor(matrix) {
+        this.matrix = matrix;
+        this.row = matrix.length;
+        this.col = matrix[0].length;
+        this.visitedNodes = new Array(this.row).fill().map(() => new Array(this.col).fill(false));
+      }
+      
+      validCells(row, col) {
+        return row >=0 && col >= 0 && row < this.row && col < this.col;
+      }
+      
+      getAdjacencyCells(row, col) {
+        const directions = [
+          [-1, 0], // Up
+          [1, 0],  // Down
+          [0, -1], // Left
+          [0, 1]   // Right
+        ];
+        
+        const adjacencyCells = [];
+        
+        for(let [dr, dc] of directions) {
+            const newRow = row + dr;
+            const newCol = col + dc;
+            
+            if(this.validCells(newRow, newCol)) {
+              adjacencyCells.push([newRow, newCol]);
+            }
+        }
+        
+        return adjacencyCells;
+      }
+      
+      dfsTraversal(startingRow, startingCol) {
+        this.dfsTraversalHelper(startingRow, startingCol);
+      }
+      
+      dfsTraversalHelper(startingRow, startingCol) {
+        this.visitedNodes[startingRow][startingCol] = true;
+        
+        console.log(`Visiting cell: [${startingRow}, ${startingCol}]`);
+        
+        for(const [adjR, adjC] of this.getAdjacencyCells(startingRow, startingCol)) {
+          if(!this.visitedNodes[adjR][adjC]) {
+            this.dfsTraversalHelper(adjR, adjC);
+          }
+        }
+      }
+    }
+    
+    const matrix = [
+      [0, 1, 0],
+      [1, 0, 1],
+      [1, 1, 0],
+      [0, 1, 1]
+    ];
+        
+    let graph = new Graph(matrix);
+    console.log('**** DFS *****')
+    graph.dfsTraversal(0,0);
      ```
      </p>
   </details>
