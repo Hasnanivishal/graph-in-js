@@ -1209,14 +1209,74 @@
 
   ---
 
-5. <details>
+12. <details>
     <summary>
         <b>
+            Perform Topological Sorting on DAG?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class Graph {
+      constructor() {
+        this.adjacencyList = new Map();
+      }
+    
+      addVertex(vertex) {
+        this.adjacencyList.set(vertex, []);
+      }
+    
+      addEdge(source, destination) {
+        this.adjacencyList.get(source).push(destination);
+      }
+    
+      topologicalSort() {
+        const visited = new Set();
+        const stack = [];
+    
+        for (let vertex of this.adjacencyList.keys()) {
+          if (!visited.has(vertex)) {
+            this.dfs(vertex, visited, stack);
+          }
+        }
+    
+        return stack.reverse();
+      }
+    
+      dfs(vertex, visited, stack) {
+        visited.add(vertex);
+    
+        const neighbors = this.adjacencyList.get(vertex);
+    
+        for (let neighbor of neighbors) {
+          if (!visited.has(neighbor)) {
+            this.dfs(neighbor, visited, stack);
+          }
+        }
+    
+        stack.push(vertex);
+      }
+    }
+    
+    const graph = new Graph();
+    
+    graph.addVertex('A');
+    graph.addVertex('B');
+    graph.addVertex('C');
+    graph.addVertex('D');
+    graph.addVertex('E');
+    graph.addVertex('F');
+    
+    graph.addEdge('A', 'D');
+    graph.addEdge('F', 'B');
+    graph.addEdge('B', 'D');
+    graph.addEdge('F', 'A');
+    graph.addEdge('D', 'C');
+    
+    const topologicalOrder = graph.topologicalSort();
+    console.log('Topological Order:', topologicalOrder);
+
      ```
      </p>
   </details>
