@@ -1212,7 +1212,7 @@
 12. <details>
     <summary>
         <b>
-            Perform Topological Sorting on DAG?
+            Perform Topological Sorting on DAG? [ DFS ]
         </b>
     </summary>
      <p>
@@ -1287,11 +1287,93 @@
 5. <details>
     <summary>
         <b>
+            Perform Topological Sorting on DAG? [ BFS - Kahn's Algorithm ]
         </b>
     </summary>
      <p>
        
     ```javascript
+    class Graph {
+      constructor() {
+        this.adjacencyList = new Map();
+      }
+    
+      addVertex(vertex) {
+        this.adjacencyList.set(vertex, []);
+      }
+    
+      addEdge(source, destination) {
+        this.adjacencyList.get(source).push(destination);
+      }
+    
+      topologicalSort() {
+        // Create a Map to store Indgree values
+        const inDegree = new Map();
+        
+        // Initially set all inDegree as 0
+        for(let key of this.adjacencyList.keys()) {
+          inDegree.set(key, 0);
+        }
+        
+        // Calculate the inDegree for each node by iterating over the array of each node
+        for(let neighbors of this.adjacencyList.values()) {
+          for(let neighbor of neighbors) {
+            inDegree.set(neighbor, inDegree.get(neighbor) + 1);
+          }
+        }
+        
+        let queue = [];
+        let result = [];
+    
+        // push the nodes in the queue whoses inDegree is 0
+        for(let [node, degree] of inDegree.entries()) {
+          if(degree == 0) {
+            queue.push(node);
+          }
+        }
+        
+        while (queue.length > 0) {
+          // get the first node
+          const vertex = queue.shift();
+          // push it into the result
+          result.push(vertex);
+          
+          const adjencyNodes = this.adjacencyList.get(vertex);
+          
+          // iterate over adjacency nodes
+          for(let adjencyNode of adjencyNodes) {
+            // reduce the inDegree for each adjacency nodes
+            inDegree.set(adjencyNode, inDegree.get(adjencyNode) - 1);
+            
+            // push into the queue if the inDegree is 0
+            if(inDegree.get(adjencyNode) == 0) {
+              queue.push(adjencyNode);
+            }
+          }
+        }
+        
+        // return the result array
+        return result;
+      }
+    }
+    
+    const graph = new Graph();
+    
+    graph.addVertex('A');
+    graph.addVertex('B');
+    graph.addVertex('C');
+    graph.addVertex('D');
+    graph.addVertex('E');
+    graph.addVertex('F');
+    
+    graph.addEdge('A', 'D');
+    graph.addEdge('F', 'B');
+    graph.addEdge('B', 'D');
+    graph.addEdge('F', 'A');
+    graph.addEdge('D', 'C');
+    
+    const topologicalOrder = graph.topologicalSort();
+    console.log('Topological Order:', topologicalOrder);
      ```
      </p>
   </details>
