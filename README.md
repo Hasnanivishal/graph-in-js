@@ -1753,11 +1753,101 @@
 17. <details>
     <summary>
         <b>
+            Determine the Cheapest Flights wit K stops using Dijkastra's Algo?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class PriorityQueue {
+      constructor() {
+        this.queue = [];
+      }
+    
+      enqueue(steps, node, distance) {
+        this.queue.push({ steps, node, distance });
+        this.queue.sort((a, b) => a.steps - b.steps);
+      }
+    
+      dequeue() {
+        return this.queue.shift();
+      }
+    
+      isEmpty() {
+        return this.queue.length === 0;
+      }
+    }
+    
+    class Graph {
+      constructor() {
+        this.adjacencyList = new Map();
+      }
+    
+      addVertex(vertex) {
+        this.adjacencyList.set(vertex, new Map());
+      }
+    
+      addEdge(source, destination, weight) {
+        this.adjacencyList.get(source).set(destination, weight);
+      }
+    
+      dijkstra(start, end, steps) {
+        const distances = new Map();
+        const previous = new Map();
+        const queue = new PriorityQueue();
+    
+        for (let vertex of this.adjacencyList.keys()) {
+          if (vertex === start) {
+            distances.set(vertex, 0);
+            queue.enqueue(0, vertex, 0);
+          } else {
+            distances.set(vertex, Infinity);
+            queue.enqueue(Infinity, vertex, Infinity);
+          }
+          previous.set(vertex, vertex);
+        }
+    
+        while (!queue.isEmpty()) {
+          const { steps: k, node: current, distance: d } = queue.dequeue();
+    
+          if (current === end) {
+            return d == Infinity ? -1 : d;
+          }
+    
+          // Skip if we exceed the maximum number of steps
+          if (k < steps) {
+            for (let [neighbor, weight] of this.adjacencyList.get(current).entries()) {
+              const totalDistance = distances.get(current) + weight;
+    
+              if (totalDistance < distances.get(neighbor) && k < steps) {
+                distances.set(neighbor, totalDistance);
+                previous.set(neighbor, current);
+    
+                queue.enqueue(k + 1, neighbor, totalDistance);
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    const graph = new Graph();
+    
+    graph.addVertex('A');
+    graph.addVertex('B');
+    graph.addVertex('C');
+    graph.addVertex('D');
+    graph.addVertex('E');
+    graph.addVertex('F');
+    
+    graph.addEdge('A', 'B', 5);
+    graph.addEdge('A', 'D', 2);
+    graph.addEdge('D', 'B', 2);
+    graph.addEdge('B', 'C', 5);
+    graph.addEdge('B', 'E', 1);
+    graph.addEdge('E', 'C', 1);
+    
+    console.log('Cheapest price:', graph.dijkstra('A', 'E', 2));
      ```
      </p>
   </details>
