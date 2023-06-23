@@ -1977,11 +1977,90 @@
 19. <details>
     <summary>
         <b>
+            Determin the Shortest Path, Distance and Negative Cycle in Directed weighted Graph using Floyd Warshall Algo?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class Graph {
+      // adjacency matrix approach
+      constructor(vertices) {
+        this.vertices = vertices;
+        
+        // prepare a matrix
+        this.adjMatrix = Array(vertices)
+          .fill(null)
+          .map(() => Array(vertices).fill(Infinity));
+    
+        // Initialize the diagonal with 0 (distance from a vertex to itself)
+        for (let i = 0; i < vertices; i++) {
+          this.adjMatrix[i][i] = 0;
+        }
+      }
+    
+      addEdge(source, destination, weight) {
+        this.adjMatrix[source][destination] = weight;
+      }
+    
+      floydWarshall() {
+        const dist = this.adjMatrix;
+    
+        // Perform the Floyd-Warshall algorithm
+        // run for every node
+        for (let k = 0; k < this.vertices; k++) {
+          // run for each row and col
+          for (let i = 0; i < this.vertices; i++) {
+            for (let j = 0; j < this.vertices; j++) {
+              // determine the distance if [i,k] + [k,j] < [i][j]
+              // if k = 1
+              // [0,1] + [1,0] < [0][0]
+              if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                dist[i][j] = dist[i][k] + dist[k][j];
+              }
+            }
+          }
+        }
+        
+        // to check if there is any negative weight cycles exists
+        for(let i=0; i<this.adjMatrix.length; i++) {
+          if(dist[i][i] < 0) {
+            throw new Error('Graph contains negative-weight cycles');
+          }
+        }
+    
+        return dist;
+      }
+    }
+    
+    const graph = new Graph(4);
+    
+    graph.addEdge(0, 1, 3);
+    graph.addEdge(0, 3, 7);
+    graph.addEdge(1, 2, 2);
+    graph.addEdge(2, 0, 1);
+    graph.addEdge(2, 3, 5);
+    graph.addEdge(3, 2, 4);
+    
+    const distances = graph.floydWarshall();
+    
+    console.log('All-pairs shortest distances:');
+    for (let i = 0; i < graph.vertices; i++) {
+      for (let j = 0; j < graph.vertices; j++) {
+        console.log(`From ${i} to ${j}: ${distances[i][j]}`);
+      }
+    }
+    
+    console.log("***** Negative Cycle weight Example ********")
+    
+    const graph_cycle = new Graph(4);
+    
+    graph_cycle.addEdge(0, 1, 1);
+    graph_cycle.addEdge(1, 2, 3);
+    graph_cycle.addEdge(2, 3, 2);
+    graph_cycle.addEdge(3, 1, -6);
+    
+    graph_cycle.floydWarshall();
      ```
      </p>
   </details>
