@@ -1643,11 +1643,106 @@
 16. <details>
     <summary>
         <b>
+            Determine the shortest distance between 2 nodes in a Unit Matrix using Dijkastra's Algo?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class PriorityQueue {
+      constructor() {
+        this.queue = [];
+      }
+    
+      enqueue(node, distance) {
+        this.queue.push({ node, distance });
+        this.queue.sort((a, b) => a.distance - b.distance);
+      }
+    
+      dequeue() {
+        return this.queue.shift();
+      }
+    
+      isEmpty() {
+        return this.queue.length === 0;
+      }
+    }
+    
+    class Graph {
+      constructor(matrix) {
+        this.matrix = matrix;
+        this.row = matrix.length;
+        this.col = matrix[0].length;
+        this.distances = new Array(this.row).fill().map(() => new Array(this.col).fill(Infinity));
+      }
+      
+      validCells(row, col) {
+        return row >=0 && col >= 0 && row < this.row && col < this.col;
+      }
+      
+      getAdjacencyCells(row, col) {
+        const directions = [
+          [-1, 0], // Up
+          [1, 0],  // Down
+          [0, -1], // Left
+          [0, 1]   // Right
+        ];
+        
+        const adjacencyCells = [];
+        
+        for(let [dr, dc] of directions) {
+            const newRow = row + dr;
+            const newCol = col + dc;
+            
+            if(this.validCells(newRow, newCol)) {
+              adjacencyCells.push([newRow, newCol]);
+            }
+        }
+        
+        return adjacencyCells;
+      }
+      
+      dijkstra(src, des) {
+        const queue = new PriorityQueue();
+        let [ i, j ] = src;
+        let [desRow, desCol] = des;
+        
+        this.distances[i][j] = 0;
+        
+        queue.enqueue({i,j}, 0);
+        
+        while (!queue.isEmpty()) {
+    
+          const { node: current, distance: d } = queue.dequeue();
+          
+          for (let [row, col] of this.getAdjacencyCells(current.i, current.j)) {
+            
+            if (d + 1 < this.distances[row][col]) {
+              this.distances[row][col] = d + 1;
+              
+              if(row == desRow && col == desCol) 
+              {
+                console.log(`distanse from [${i},${j}] to [${desRow},${desCol}] is ${d+1}`);
+              }
+                
+              queue.enqueue({i: row, j: col}, d + 1);
+            }
+          }
+        }
+          
+        console.log(this.distances) 
+      }
+    }
+    
+    const matrix = [
+      [0, 1, 0],
+      [1, 0, 1],
+      [1, 1, 0],
+      [0, 1, 1]
+    ];
+        
+    let graph = new Graph(matrix);
+    graph.dijkstra([0,0], [3,2]);
      ```
      </p>
   </details>
