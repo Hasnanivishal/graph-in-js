@@ -1384,11 +1384,97 @@
 14. <details>
     <summary>
         <b>
+            Perform Dijkastra's Algo to find out Shortest Path to all nodes.[ Using Priority Queue ]
         </b>
     </summary>
      <p>
        
     ```javascript
+    class PriorityQueue {
+      constructor() {
+        this.queue = [];
+      }
+    
+      enqueue(node, distance) {
+        this.queue.push({ node, distance });
+        this.queue.sort((a, b) => a.distance - b.distance);
+      }
+    
+      dequeue() {
+        return this.queue.shift();
+      }
+    
+      isEmpty() {
+        return this.queue.length === 0;
+      }
+    }
+    
+    class Graph {
+      constructor() {
+        this.adjacencyList = new Map();
+      }
+    
+      addVertex(vertex) {
+        this.adjacencyList.set(vertex, new Map());
+      }
+    
+      addEdge(source, destination, weight) {
+        this.adjacencyList.get(source).set(destination, weight);
+        this.adjacencyList.get(destination).set(source, weight);
+      }
+    
+      dijkstra(start) {
+        const distances = new Map();
+        const queue = new PriorityQueue();
+    
+        // set the distance as Infinity for all other nodes
+        for (let vertex of this.adjacencyList.keys()) {
+          if (vertex === start) {
+            distances.set(vertex, 0);
+            // push the start node in queue
+            queue.enqueue(vertex, 0);
+          } else {
+            distances.set(vertex, Infinity);
+            queue.enqueue(vertex, Infinity);
+          }
+        }
+    
+        while (!queue.isEmpty()) {
+          const { node: current } = queue.dequeue();
+    
+          // get the adjacency nodes
+          for (let [neighbor, weight] of this.adjacencyList.get(current).entries()) {
+            const totalDistance = distances.get(current) + weight;
+    
+            if (totalDistance < distances.get(neighbor)) {
+              // update the distance array with new distance value
+              distances.set(neighbor, totalDistance);
+              // push into the queue
+              queue.enqueue(neighbor, totalDistance);
+            }
+          }
+        }
+    
+        return distances;
+      }
+    }
+    
+    const graph = new Graph();
+    
+    graph.addVertex('A');
+    graph.addVertex('B');
+    graph.addVertex('C');
+    graph.addVertex('D');
+    graph.addVertex('E');
+    
+    graph.addEdge('A', 'B', 4);
+    graph.addEdge('A', 'C', 2);
+    graph.addEdge('B', 'E', 3);
+    graph.addEdge('C', 'D', 2);
+    graph.addEdge('D', 'E', 3);
+    
+    const distances = graph.dijkstra('A');
+    console.log('Shortest distances:', distances);
      ```
      </p>
   </details>
