@@ -1858,11 +1858,115 @@
 18. <details>
     <summary>
         <b>
+            Determin the Shortest Path, Distance and Negative Cycle in Directed weighted Graph using Bellman Ford Algo?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class Graph {
+      
+      constructor() {
+        this.edges = [];
+        this.nodes = new Set();
+      }
+    
+      addEdge(source, destination, weight) {
+        // edges
+        this.edges.push({ source, destination, weight });
+        
+        // vertex
+        this.nodes.add(source);
+        this.nodes.add(destination);
+      }
+    
+      bellmanFord(start) {
+        
+        // distance map
+        this.distances = new Map();
+        // previous map for path
+        const previous = new Map();
+    
+        // Initialize distances with Infinity except for the start node
+        for (let node of this.nodes) {
+          this.distances.set(node, Infinity);
+          previous.set(node, null);
+        }
+        
+        this.distances.set(start, 0);
+    
+        // Relax edges repeatedly |V| - 1 times
+        for (let i = 0; i < this.nodes.size - 1; i++) {
+          
+          // run the loop on every edge
+          for (let { source, destination, weight } of this.edges) {
+            // Reflax the edges
+            let totalDistance = this.distances.get(source) + weight;
+            if (this.distances.get(source) != Infinity && totalDistance < this.distances.get(destination)) {
+              this.distances.set(destination, totalDistance);
+              previous.set(destination, source);
+            }
+          }
+        }
+        
+        this.flag = false;
+        
+        // Nth relaxation to Check for negative cycles
+        for (const { source, destination, weight } of this.edges) {
+          
+          // If graph trying to update it in the Nth iteration means 
+          // we have negative cycles
+          if (this.distances.get(source) != Infinity && this.distances.get(source) + weight < this.distances.get(destination)) {
+            this.flag = true; // Negative-weight cycle found
+          }
+        }
+        
+        let d = this.flag ? null : this.distances;
+    
+        return { distances: d, previous: previous };
+      }
+      
+      getPath(start, end) {
+        const { distances, previous } = this.bellmanFord(start);
+        
+        if (distances == null) {
+          throw new Error('Graph contains negative-weight cycles');
+        }
+        
+        const path = [];
+        let current = end;
+    
+        while (current !== start) {
+          path.unshift(current);
+          current = previous.get(current);
+        }
+    
+        path.unshift(start);
+        return { path, distance: distances };
+      }
+    }
+    
+    const graph = new Graph();
+    
+    graph.addEdge('A', 'B', 2);
+    graph.addEdge('A', 'C', 4);
+    graph.addEdge('B', 'C', 1);
+    graph.addEdge('B', 'D', 3);
+    graph.addEdge('C', 'D', -6);
+    
+    const result = graph.getPath('A', 'D');
+    
+    console.log('Shortest path:', result.path);
+    console.log('Shortest distance:', result.distance);
+    
+    console.log("***** Negative Cycle weight Example ********")
+    const graph_cycle = new Graph();
+    
+    graph_cycle.addEdge('A', 'B', -1);
+    graph_cycle.addEdge('B', 'C', -2);
+    graph_cycle.addEdge('C', 'A', -3);
+    
+    graph_cycle.getPath('A', 'C');
      ```
      </p>
   </details>
@@ -1870,7 +1974,7 @@
 
   ---
 
-5. <details>
+19. <details>
     <summary>
         <b>
         </b>
@@ -1884,7 +1988,119 @@
 
 ---
 
-5. <details>
+20. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+20. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+20. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+20. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+20. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+20. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+20. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+20. <details>
+    <summary>
+        <b>
+        </b>
+    </summary>
+     <p>
+       
+    ```javascript
+     ```
+     </p>
+  </details>
+
+  ---
+
+20. <details>
     <summary>
         <b>
         </b>
