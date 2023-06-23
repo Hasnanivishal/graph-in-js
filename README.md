@@ -1438,8 +1438,11 @@
             queue.enqueue(vertex, Infinity);
           }
         }
+        
+        let iterationCount = 0;
     
         while (!queue.isEmpty()) {
+          iterationCount++;
           const { node: current } = queue.dequeue();
     
           // get the adjacency nodes
@@ -1454,6 +1457,8 @@
             }
           }
         }
+        
+        console.log('Number of iterations:', iterationCount);
     
         return distances;
       }
@@ -1466,12 +1471,16 @@
     graph.addVertex('C');
     graph.addVertex('D');
     graph.addVertex('E');
+    graph.addVertex('F');
     
     graph.addEdge('A', 'B', 4);
-    graph.addEdge('A', 'C', 2);
-    graph.addEdge('B', 'E', 3);
-    graph.addEdge('C', 'D', 2);
-    graph.addEdge('D', 'E', 3);
+    graph.addEdge('A', 'C', 4);
+    graph.addEdge('B', 'C', 3);
+    graph.addEdge('C', 'D', 3);
+    graph.addEdge('C', 'E', 1);
+    graph.addEdge('C', 'F', 6);
+    graph.addEdge('D', 'F', 2);
+    graph.addEdge('E', 'F', 3);
     
     const distances = graph.dijkstra('A');
     console.log('Shortest distances:', distances);
@@ -1485,11 +1494,115 @@
 15. <details>
     <summary>
         <b>
+            Perform Dijkastra's Algo to find out Shortest Path to all nodes.[ Using Set ]
         </b>
     </summary>
      <p>
        
     ```javascript
+    class Graph {
+      constructor() {
+        this.adjacencyList = new Map();
+        this.nodeRefs = new Map();
+      }
+    
+      addVertex(vertex) {
+        this.adjacencyList.set(vertex, new Map());
+      }
+    
+      addEdge(source, destination, weight) {
+        this.adjacencyList.get(source).set(destination, weight);
+        this.adjacencyList.get(destination).set(source, weight);
+      }
+    
+      dijkstra(startVertex) {
+        const distances = new Map();
+        const unvisitedNodes = new Set();
+    
+        // Initialize distances with Infinity for all nodes except the start vertex
+        for (let vertex of this.adjacencyList.keys()) {
+          if (vertex === startVertex) {
+            distances.set(vertex, 0);
+            
+            const nodeRef = { [vertex]: 0 };
+            unvisitedNodes.add(nodeRef);
+            
+            this.nodeRefs.set(vertex, nodeRef);
+          } else {
+            distances.set(vertex, Infinity);
+            
+            const nodeRef = { [vertex]: Infinity };
+            unvisitedNodes.add(nodeRef);
+            
+            this.nodeRefs.set(vertex, nodeRef);
+          }
+        }
+    
+        let iterationCount = 0;
+    
+        while (unvisitedNodes.size > 0) {
+          iterationCount++;
+    
+          // get the first item from set
+          const [currentNodeRef] = unvisitedNodes;
+          // delete this from set
+          unvisitedNodes.delete(currentNodeRef);
+          // get the key value i.e. vertex
+          const currentVertex = Object.keys(currentNodeRef)[0];
+    
+          // Visit the neighbors of the current vertex
+          for (let [neighbor, weight] of this.adjacencyList.get(currentVertex).entries()) {
+            const totalDistance = distances.get(currentVertex) + weight;
+    
+            if (totalDistance < distances.get(neighbor)) {
+              const neighborRef = this.nodeRefs.get(neighbor);
+    
+              // check if the neighbor has Infinity value or not
+              // if not having means someone visit this already with
+              // higher distance value
+              // remove it from set
+              // this will also help in reducing the number of iterations
+              if (distances.get(neighbor) !== Infinity) {
+                unvisitedNodes.delete(neighborRef);
+              }
+    
+              distances.set(neighbor, totalDistance);
+              
+              const newNeighborRef = { [neighbor]: totalDistance };
+              
+              unvisitedNodes.add(newNeighborRef);
+              
+              this.nodeRefs.set(neighbor, newNeighborRef);
+            }
+          }
+        }
+        
+        console.log('Number of iterations:', iterationCount);
+    
+        return distances;
+      }
+    }
+    
+    const graph = new Graph();
+    
+    graph.addVertex('A');
+    graph.addVertex('B');
+    graph.addVertex('C');
+    graph.addVertex('D');
+    graph.addVertex('E');
+    graph.addVertex('F');
+    
+    graph.addEdge('A', 'B', 4);
+    graph.addEdge('A', 'C', 4);
+    graph.addEdge('B', 'C', 3);
+    graph.addEdge('C', 'D', 3);
+    graph.addEdge('C', 'E', 1);
+    graph.addEdge('C', 'F', 6);
+    graph.addEdge('D', 'F', 2);
+    graph.addEdge('E', 'F', 3);
+    
+    const distances = graph.dijkstra('A');
+    console.log('Shortest distances:', distances);
      ```
      </p>
   </details>
