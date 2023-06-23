@@ -1384,7 +1384,7 @@
 14. <details>
     <summary>
         <b>
-            Perform Dijkastra's Algo to find out Shortest Path to all nodes.[ Using Priority Queue ]
+            Perform Dijkastra's Algo to find out the Shortest Distance to all nodes And Shortest Path b/w two node?[ Using Priority Queue ]
         </b>
     </summary>
      <p>
@@ -1425,44 +1425,71 @@
     
       dijkstra(start) {
         const distances = new Map();
+        const previous = new Map();
         const queue = new PriorityQueue();
     
-        // set the distance as Infinity for all other nodes
         for (let vertex of this.adjacencyList.keys()) {
           if (vertex === start) {
             distances.set(vertex, 0);
-            // push the start node in queue
             queue.enqueue(vertex, 0);
           } else {
             distances.set(vertex, Infinity);
             queue.enqueue(vertex, Infinity);
           }
+          previous.set(vertex, vertex);
         }
-        
+
         let iterationCount = 0;
     
         while (!queue.isEmpty()) {
           iterationCount++;
+    
           const { node: current } = queue.dequeue();
     
-          // get the adjacency nodes
           for (let [neighbor, weight] of this.adjacencyList.get(current).entries()) {
             const totalDistance = distances.get(current) + weight;
     
             if (totalDistance < distances.get(neighbor)) {
-              // update the distance array with new distance value
               distances.set(neighbor, totalDistance);
-              // push into the queue
+              previous.set(neighbor, current);
               queue.enqueue(neighbor, totalDistance);
             }
           }
         }
-        
+          
         console.log('Number of iterations:', iterationCount);
+          
+        return { distances, previous };
+      }
     
-        return distances;
+      getPath(start, end) {
+        // get the previousNodes map from dijkstra algo
+        const { distances, previous } = this.dijkstra(start);
+        
+        console.log(previous)
+        
+        // push the end node in the path array
+        const path = [end];
+        
+        // set the end node as current for backtracking
+        let current = end;
+    
+        // run the loop until we reach to the start node
+        while (current !== start) {
+          const previousNode = previous.get(current);
+    
+          // put the previousNode value in array
+          path.unshift(previousNode);
+          
+          // make it as current node 
+          current = previousNode;
+        }
+    
+        return path;
       }
     }
+    
+    // Example usage:
     
     const graph = new Graph();
     
@@ -1482,8 +1509,11 @@
     graph.addEdge('D', 'F', 2);
     graph.addEdge('E', 'F', 3);
     
-    const distances = graph.dijkstra('A');
+    const { distances, previous } = graph.dijkstra('A');
+    
     console.log('Shortest distances:', distances);
+    console.log('Shortest path from A to E:', graph.getPath('A', 'F'));
+
      ```
      </p>
   </details>
