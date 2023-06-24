@@ -2312,18 +2312,129 @@
 22. <details>
     <summary>
         <b>
+            Determine the MST and MST weight using Kruskal's Algo?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class DisjointSet {
+  
+      constructor(n) {
+        // array to keep parents
+        this.parent = new Array(n);
+        // array to keep size, default 1
+        this.size = new Array(n).fill(1);
+        // set parent values to node itself
+        for (let i = 0; i < n; i++) {
+          this.parent[i] = i;
+        }
+      }
+    
+      findUltimateParent(node) {
+        // if parent of the node is node itself return the node
+        if (this.parent[node] == node) {
+          return this.parent[node];
+        }
+        // keep use recursion to find the ultimate parent node
+        return this.parent[node] = this.findUltimateParent(this.parent[node]);
+      }
+      
+      // Union by Size 
+      unionBySize(u, v) {
+        let up_u = this.findUltimateParent(u);
+        let up_v = this.findUltimateParent(v);
+        
+        // If parents are the same, nodes are in the same component
+        if(up_u == up_v) return;
+        
+        // If not then Check the size of ultimate parents of u and v
+        let size_u = this.size[up_u];
+        let size_v = this.size[up_v];
+        
+        // if size of ultimate parent of u is less than ultimate parent of v
+        // connect from u to v    
+        if(size_u < size_v) {
+          // smaller get attached to the larger one
+          this.parent[up_u] = up_v;
+          
+          // increase the size of ultilmate parent of v by the size of up_u
+          this.size[up_v] += size_u;
+        } 
+        // For all other case, connect the edges 
+        else {
+          this.parent[up_v] = up_u;
+          this.size[up_u] += size_v;
+        }
+      }
+    }
+    
+    class Graph {
+      constructor(numVertices) {
+        this.numVertices = numVertices;
+        
+        // Use set to keep edges sorted by weight
+        this.edges = new Set();
+      }
+    
+      addEdge(source, destination, weight) {
+        this.edges.add({ weight, source, destination });
+      }
+      
+      kruskalMST() {
+        // Stoes the edges of MST
+        let mstList = [];
+        
+        // Sum of MST weight
+        let mstSum = 0;
+        
+        // create the instance of Disjoint Set
+        const disjointSet = new DisjointSet(this.numVertices);
+    
+        // Run loop on the sorted edges
+        for (const edge of this.edges) {
+          
+          // get the edge
+          const { source, destination, weight } = edge;
+          
+          // if ultimate path of source and destination is not the same 
+          // put this pair into the mstList
+          if (disjointSet.findUltimateParent(source) !== disjointSet.findUltimateParent(destination)) {
+            
+            // Run union by size on source, destination edge pair
+            disjointSet.unionBySize(source, destination);
+            
+            // put the edge into MST list
+            mstList.push({edge1: source, edge2: destination});
+            
+            // increase the sum with node weight
+            mstSum+=weight;
+          }
+        }
+    
+        return { mstList, mstSum };
+      }
+    }
+    
+    const graph = new Graph(4);
+    
+    graph.addEdge(0, 1, 10);
+    graph.addEdge(0, 2, 6);
+    graph.addEdge(0, 3, 5);
+    graph.addEdge(1, 3, 15);
+    graph.addEdge(2, 3, 4);
+    
+    const { mstList, mstSum } = graph.kruskalMST();
+    
+    console.log('Minimum Spanning tree Edges', mstList);
+    console.log('Minimum Spanning tree Weight', mstSum);
      ```
      </p>
   </details>
 
   ---
 
-20. <details>
+23. <details>
     <summary>
         <b>
         </b>
@@ -2337,7 +2448,7 @@
 
   ---
 
-20. <details>
+24. <details>
     <summary>
         <b>
         </b>
@@ -2351,7 +2462,7 @@
 
   ---
 
-20. <details>
+25. <details>
     <summary>
         <b>
         </b>
@@ -2365,7 +2476,7 @@
 
   ---
 
-20. <details>
+26. <details>
     <summary>
         <b>
         </b>
