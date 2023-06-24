@@ -2070,32 +2070,246 @@
 20. <details>
     <summary>
         <b>
+            Determine the MST and MST weight using Prim's Algo?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class PriorityQueue {
+      constructor() {
+        this.queue = [];
+      }
+    
+      enqueue(distance, node, parent) {
+        this.queue.push({ distance, node, parent });
+        this.queue.sort((a, b) => a.distance - b.distance);
+      }
+    
+      dequeue() {
+        return this.queue.shift();
+      }
+    
+      isEmpty() {
+        return this.queue.length === 0;
+      }
+    }
+    
+    class Graph {
+      constructor() {
+        this.adjacencyList = new Map();
+      }
+    
+      addVertex(vertex) {
+        this.adjacencyList.set(vertex, new Map());
+      }
+    
+      addEdge(source, destination, weight) {
+        this.adjacencyList.get(source).set(destination, weight);
+        this.adjacencyList.get(destination).set(source, weight);
+      }
+    
+      primsMST(start) {
+        // initalize a visited array
+        const visited = new Map();
+        
+        // Stores the weight, node, parent 
+        const queue = new PriorityQueue();
+        
+        // Stoes the edges of MST
+        let mstList = [];
+        
+        // Sum of MST weight
+        let mstSum = 0;
+    
+        // Mark all of the nodes as non visited
+        for (let vertex of this.adjacencyList.keys()) {
+          if (vertex === start) {
+            visited.set(vertex, 1);
+            
+            // Starting node will have weight as 0 and parent as -1
+            queue.enqueue(0, vertex, -1);
+            
+          } else {
+            visited.set(vertex, 0);
+          }
+        }
+        
+        while (!queue.isEmpty()) {
+          const { distance: weight , node: current, parent } = queue.dequeue();
+          
+          // If parent is not -1 and node is not visited
+          if(parent !== -1 && !visited.get(current)) {
+            // put the edge into MST list
+            mstList.push({edge1: parent, edge2: current});
+            // increase the sum with node weight
+            mstSum+=weight;
+          }
+          
+          // set the node as visited
+          visited.set(current, 1);
+          
+          for (let [neighbor, weight] of this.adjacencyList.get(current).entries()) {
+            // Push the non visited neighbors in the priority queue
+            if(!visited.get(neighbor)) {
+              queue.enqueue(weight, neighbor, current);
+            }
+          }
+        }
+        
+        return { mstList, mstSum };
+      }
+    }
+    
+    const graph = new Graph();
+    
+    graph.addVertex('A');
+    graph.addVertex('B');
+    graph.addVertex('C');
+    graph.addVertex('D');
+    graph.addVertex('E');
+    
+    graph.addEdge('A', 'B', 2);
+    graph.addEdge('A', 'C', 1);
+    graph.addEdge('B', 'C', 1);
+    graph.addEdge('B', 'D', 2);
+    graph.addEdge('B', 'E', 2);
+    graph.addEdge('D', 'E', 1);
+    
+    const { mstList, mstSum } = graph.primsMST('A');
+    
+    console.log('Minimum Spanning tree Edges', mstList);
+    console.log('Minimum Spanning tree Weight', mstSum);
+
      ```
      </p>
   </details>
 
   ---
 
-20. <details>
+21. <details>
     <summary>
         <b>
+            Check if given two nodes belongs to same component using Disjoin Set Union by Rank and Union by Set?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class DisjointSet {
+      
+      constructor(n) {
+        // array to keep parents
+        this.parent = new Array(n);
+        // array to keep rank, default 0
+        this.rank = new Array(n).fill(0);
+        // array to keep size, default 1
+        this.size = new Array(n).fill(1);
+    
+        // set parent values to node itself
+        for (let i = 0; i < n; i++) {
+          this.parent[i] = i;
+        }
+      }
+    
+      findUltimateParent(node) {
+        // if parent of the node is node itself return the node
+        if (this.parent[node] == node) {
+          return this.parent[node];
+        }
+        // keep use recursion to find the ultimate parent node
+        return this.parent[node] = this.findUltimateParent(this.parent[node]);
+      }
+      
+      // Union by Rank
+      unionByRank(u, v) {
+        let up_u = this.findUltimateParent(u);
+        let up_v = this.findUltimateParent(v);
+        
+        // If parent are the same nodes are in the same component, return
+        if(up_u == up_v) return;
+        
+        // If not then Check the rank of ultimate parents of u and v
+        let rank_u = this.rank[up_u];
+        let rank_v = this.rank[up_v];
+        
+        // if rank of ultimate parent of u is less than ultimate parent of v
+        // connect from u to v    
+        if(rank_u < rank_v) {
+          // smaller get attached to the larger one
+          this.parent[up_u] = up_v;
+        } 
+        else if (rank_v < rank_u) {
+          this.parent[up_v] = up_u;
+        } 
+        // If Ranks are same connect either of them 
+        // Update the Rank value of the parent edge 
+        else {
+          this.parent[up_u] = up_v;
+          this.rank[up_v]++;
+        }
+      }
+      
+      // Union by Size 
+      unionBySize(u, v) {
+        let up_u = this.findUltimateParent(u);
+        let up_v = this.findUltimateParent(v);
+        
+        // If parents are the same, nodes are in the same component
+        if(up_u == up_v) return;
+        
+        // If not then Check the size of ultimate parents of u and v
+        let size_u = this.size[up_u];
+        let size_v = this.size[up_v];
+        
+        // if size of ultimate parent of u is less than ultimate parent of v
+        // connect from u to v    
+        if(size_u < size_v) {
+          // smaller get attached to the larger one
+          this.parent[up_u] = up_v;
+          
+          // increase the size of ultilmate parent of v by the size of up_u
+          this.size[up_v] += size_u;
+        } 
+        // For all other case, connect the edges 
+        else {
+          this.parent[up_v] = up_u;
+          this.size[up_u] += size_v;
+        }
+      }
+    }
+    
+    const edges = [
+      [0, 1],
+      [2, 3],
+      [4, 5],
+      [1, 2],
+    ];
+    
+    const n = 6; // Number of vertices in the graph
+    
+    const disjointSet_rank = new DisjointSet(n);
+    for (const [u, v] of edges) {
+      disjointSet_rank.unionByRank(u, v);
+    }
+    
+    let connected_rank = disjointSet_rank.findUltimateParent(2) == disjointSet_rank.findUltimateParent(4)
+    console.log(connected_rank);
+    
+    const disjointSet_size = new DisjointSet(n);
+    for (const [u, v] of edges) {
+      disjointSet_size.unionBySize(u, v);
+    }
+    
+    let connected_size = disjointSet_size.findUltimateParent(2) == disjointSet_size.findUltimateParent(0)
+    console.log(connected_size);
      ```
      </p>
   </details>
 
   ---
 
-20. <details>
+22. <details>
     <summary>
         <b>
         </b>
