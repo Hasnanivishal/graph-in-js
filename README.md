@@ -2319,7 +2319,7 @@
        
     ```javascript
     class DisjointSet {
-  
+    
       constructor(n) {
         // array to keep parents
         this.parent = new Array(n);
@@ -2373,12 +2373,12 @@
       constructor(numVertices) {
         this.numVertices = numVertices;
         
-        // Use set to keep edges sorted by weight
-        this.edges = new Set();
+        // Use array to keep edges
+        this.edges = [];
       }
     
       addEdge(source, destination, weight) {
-        this.edges.add({ weight, source, destination });
+        this.edges.push({ weight, source, destination });
       }
       
       kruskalMST() {
@@ -2387,12 +2387,15 @@
         
         // Sum of MST weight
         let mstSum = 0;
-        
+
+        // sort the array on weight
+        const sortedEdges = this.edges.sort((a, b) => a.weight - b.weight);
+    
         // create the instance of Disjoint Set
         const disjointSet = new DisjointSet(this.numVertices);
     
         // Run loop on the sorted edges
-        for (const edge of this.edges) {
+        for (const edge of sortedEdges) {
           
           // get the edge
           const { source, destination, weight } = edge;
@@ -2400,7 +2403,7 @@
           // if ultimate path of source and destination is not the same 
           // put this pair into the mstList
           if (disjointSet.findUltimateParent(source) !== disjointSet.findUltimateParent(destination)) {
-            
+          
             // Run union by size on source, destination edge pair
             disjointSet.unionBySize(source, destination);
             
@@ -2411,18 +2414,22 @@
             mstSum+=weight;
           }
         }
-    
+        
         return { mstList, mstSum };
       }
     }
     
-    const graph = new Graph(4);
+    const graph = new Graph(6);
     
-    graph.addEdge(0, 1, 10);
-    graph.addEdge(0, 2, 6);
-    graph.addEdge(0, 3, 5);
-    graph.addEdge(1, 3, 15);
-    graph.addEdge(2, 3, 4);
+    graph.addEdge(0, 1, 4);
+    graph.addEdge(0, 2, 1);
+    graph.addEdge(1, 2, 2);
+    graph.addEdge(1, 3, 5);
+    graph.addEdge(2, 3, 1);
+    graph.addEdge(2, 4, 3);
+    graph.addEdge(3, 4, 4);
+    graph.addEdge(3, 5, 3);
+    graph.addEdge(4, 5, 2);
     
     const { mstList, mstSum } = graph.kruskalMST();
     
