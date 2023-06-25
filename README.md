@@ -2444,11 +2444,146 @@
 23. <details>
     <summary>
         <b>
+            Find Number of Strongly Connected Components in a Graph using Kosaraju's Algorithm?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class Graph {
+      constructor() {
+        this.adjacencyList = new Map();
+        // list for keeping the Reverse of graph
+        this.adjacencyListReverse = new Map();
+      }  
+    
+      addVertex(node) {
+        this.adjacencyList.set(node, []);
+        this.adjacencyListReverse.set(node, []);
+      }
+    
+      addEdges(node1, node2){
+        this.adjacencyList.get(node1).push(node2);
+      }
+    
+      getEdges(node) {
+        return this.adjacencyList.get(node);
+      }
+      
+      // DFS on Components Graph
+      kosarajusAlgo() {
+        // Create a visited nodes array
+        this.visitedNodes = new Set();
+        this.stack = []
+        
+        // Step - 1: run DFS to get finishing time stack
+        // Run loop on every keys in map i.e. every node to track unreachable nodes
+        // Push into stack to know finishing time
+        for(const node of this.adjacencyList.keys()) {
+          // Run the DFS on non visited nodes only
+          if(!this.visitedNodes.has(node)) {
+            // Calls the DFS with key as starting node 
+            this.DFSHelper(node);
+          }
+        }
+        
+        // console.log(this.adjacencyListReverse);
+        
+        // Step -2: Reverse the Graph
+        // loop will run for node-first to node-last
+        for(const node of this.adjacencyList.keys()) {
+          // get the adjencyNodes 
+          for(let adjencyNode of this.adjacencyList.get(node)) {
+            // reverse the values and store in new Map
+            this.adjacencyListReverse.get(adjencyNode).push(node);
+          }
+        }
+        
+        // reset the visited array for next step
+        this.visitedNodes = new Set();
+        
+        // console.log(this.adjacencyListReverse);
+        
+        // Step-3: Perform DFS
+        let scc_counter = 0;
+        while(this.stack.length > 0) {
+          let currentItem = this.stack.pop();
+          // Run the DFS on non visited nodes only
+          if(!this.visitedNodes.has(currentItem)) {
+            scc_counter++;
+            // list to store items
+            const scc = []; 
+            // Calls the DFS with key as starting node 
+            this.DFSHelper_Transpose(currentItem, scc);
+            
+            // Print each SCC 
+            console.log(scc);
+          }
+        }
+        
+        return scc_counter;
+      }
+    
+      DFSHelper(startingNode) {
+        // add the startingNode node in visited array 
+        this.visitedNodes.add(startingNode);
+        
+        let adjencyNodes = this.adjacencyList.get(startingNode);
+        
+        // iterate over all the adjency nodes of the starting nodes
+        for(let adjencyNode of adjencyNodes) {
+          
+          // if node is not visited
+          if(!this.visitedNodes.has(adjencyNode)) {
+            // use recursion to reach at the depth of the graph
+            this.DFSHelper(adjencyNode);
+          }
+        }
+        
+        this.stack.push(startingNode);
+      }
+      
+      DFSHelper_Transpose(startingNode, list) {
+        // add the startingNode node in visited array 
+        this.visitedNodes.add(startingNode);
+        
+        let adjencyNodes = this.adjacencyListReverse.get(startingNode);
+        
+        // iterate over all the adjency nodes of the starting nodes
+        for(let adjencyNode of adjencyNodes) {
+          // if node is not visited
+          if(!this.visitedNodes.has(adjencyNode)) {
+            // use recursion to reach at the depth of the graph
+            this.DFSHelper_Transpose(adjencyNode, list);
+          }
+        }
+        
+        list.push(startingNode)
+      }
+    }
+    
+      let graph = new Graph();
+    
+      graph.addVertex(0);
+      graph.addVertex(1);
+      graph.addVertex(2);
+      graph.addVertex(3);
+      graph.addVertex(4);
+      graph.addVertex(5);
+      graph.addVertex(6);
+      graph.addVertex(7);
+      
+      graph.addEdges(0,1);
+      graph.addEdges(1,2);
+      graph.addEdges(2,0);
+      graph.addEdges(2,3);
+      graph.addEdges(3,4);
+      graph.addEdges(4,5);
+      graph.addEdges(5,6);
+      graph.addEdges(6,7);
+      graph.addEdges(6,4);
+      
+    console.log('Number of Strongly connected components:', graph.kosarajusAlgo())
      ```
      </p>
   </details>
