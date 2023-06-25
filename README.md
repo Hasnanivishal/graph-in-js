@@ -2718,11 +2718,135 @@
 25. <details>
     <summary>
         <b>
+            Find out the Articulation Points of a Graph?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class Graph {
+      constructor() {
+        this.adjacencyList = new Map();
+        
+        // step counter
+        this.step = 1;
+      }  
+    
+      addVertex(node) {
+        this.adjacencyList.set(node, []);
+      }
+    
+      addEdges(node1, node2) {
+        this.adjacencyList.get(node1).push(node2);
+        this.adjacencyList.get(node2).push(node1);
+      }
+    
+      getEdges(node) {
+        return this.adjacencyList.get(node);
+      }
+      
+      // Tarjan's Algo
+      findArticulationPoints(startingNode) {
+        // create an array for visited nodes
+        const visitedNodes = new Set();
+        
+        // store the step number i.e. Time of Insertion
+        const tin = new Array(this.adjacencyList.size).fill(0);
+        
+        // store the min of step number i.e. Lowset time of Insertion
+        const low_tin = new Array(this.adjacencyList.size).fill(0);
+        
+        // stores the articulation_points 
+        const articulation_points = new Set();
+        
+        // call the dfs method
+        this.DFSHelper(startingNode, -1, visitedNodes, tin, low_tin, articulation_points);
+        
+        return articulation_points;
+      }
+      
+      DFSHelper(startingNode, parent, visitedNodes, tin, low_tin, articulation_points) {
+        visitedNodes.add(startingNode);
+        
+        // set both the tin and low_tin to step number
+        tin[startingNode] = this.step;
+        low_tin[startingNode] = this.step;
+        
+        // increase the step
+        this.step++;
+        
+        // keep the count of adjacency nodes
+        let child = 0;
+        
+        let adjencyNodes = this.adjacencyList.get(startingNode);
+        
+        // iterate over all the adjency nodes of the starting nodes
+        for (let adjencyNode of adjencyNodes) {
+          
+          // If adjencyNode is equal to the parent of startingNode then ignore 
+          if (adjencyNode == parent) continue;
+          
+          // if node is not visited
+          if (!visitedNodes.has(adjencyNode)) {
+            // use recursion to reach at the depth of the graph
+            this.DFSHelper(adjencyNode, startingNode, visitedNodes, tin, low_tin, articulation_points);
+            
+            // after the completion of DFS traversal
+            // update Lowest time of Insertion of the starting Node
+            low_tin[startingNode] = Math.min(low_tin[startingNode], low_tin[adjencyNode]);
+            
+            // If the Lowest time of Insertion value of a neighbor
+            // is greater than equal to the Insertion time of the current node (starting node), 
+            // and not the very first node
+            // it means there is no back edge, indicating a articulation point.
+            if (low_tin[adjencyNode] >= tin[startingNode] && parent != -1) {
+              articulation_points.add(startingNode);
+            }
+            
+            // increase for all the unvisited nodes
+            child++;
+          } 
+          // If adjacency node is already visited, it is in the same path.
+          // Thus update the lowest time of insertion only.
+          // take the minumun of lowest time of insertion of starting node
+          // And the insertion time of adjencyNode
+          else {
+            low_tin[startingNode] = Math.min(low_tin[startingNode], tin[adjencyNode]);
+          }
+        }
+        
+        // check for the parent node if it can be an articulation point
+        if (child > 1 && parent == -1) {
+          articulation_points.add(startingNode);
+        }
+      }
+    }
+    
+    let graph = new Graph();
+    
+    graph.addVertex(0);
+    graph.addVertex(1);
+    graph.addVertex(2);
+    graph.addVertex(3);
+    graph.addVertex(4);
+    graph.addVertex(5);
+    graph.addVertex(6);
+    graph.addVertex(7);
+    
+    graph.addEdges(0, 1);
+    graph.addEdges(0, 7);
+    graph.addEdges(1, 2);
+    graph.addEdges(2, 0);
+    graph.addEdges(1, 3);
+    graph.addEdges(1, 4);
+    graph.addEdges(1, 6);
+    graph.addEdges(3, 5);
+    graph.addEdges(4, 5);
+    
+    
+    console.log("Articulation Points in the Graph:");
+    const articulation_points = graph.findArticulationPoints(0);
+    console.log(articulation_points);
      ```
      </p>
   </details>
