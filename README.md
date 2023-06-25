@@ -2593,11 +2593,122 @@
 24. <details>
     <summary>
         <b>
+            Determine the Critical Connections in a network i.e. Bridges using Tarjan's Algo?
         </b>
     </summary>
      <p>
        
     ```javascript
+    class Graph {
+      constructor() {
+        this.adjacencyList = new Map();
+        
+        // step counter
+        this.step = 1;
+      }  
+    
+      addVertex(node) {
+        this.adjacencyList.set(node, []);
+      }
+    
+      addEdges(node1, node2) {
+        this.adjacencyList.get(node1).push(node2);
+        this.adjacencyList.get(node2).push(node1);
+      }
+    
+      getEdges(node) {
+        return this.adjacencyList.get(node);
+      }
+      
+      // Tarjan's Algo
+      findBridges(startingNode) {
+        // create an array for visited nodes
+        const visitedNodes = new Set();
+        
+        // store the step number i.e. Time of Insertion
+        const tin = new Array(this.adjacencyList.size).fill(0);
+        
+        // store the min of step number i.e. Lowset time of Insertion
+        const low_tin = new Array(this.adjacencyList.size).fill(0);
+        
+        // stores the bridges 
+        const bridges = [];
+        
+        // call the dfs method
+        this.DFSHelper(startingNode, -1, visitedNodes, tin, low_tin, bridges);
+        
+        return bridges;
+      }
+      
+      DFSHelper(startingNode, parent, visitedNodes, tin, low_tin, bridges) {
+        visitedNodes.add(startingNode);
+        
+        // set both the tin and low_tin to step number
+        tin[startingNode] = this.step;
+        low_tin[startingNode] = this.step;
+        
+        // increase the step
+        this.step++;
+        
+        let adjencyNodes = this.adjacencyList.get(startingNode);
+        
+        // iterate over all the adjency nodes of the starting nodes
+        for (let adjencyNode of adjencyNodes) {
+          
+          // If adjencyNode is equal to the parent of startingNode then ignore 
+          if (adjencyNode == parent) continue;
+          
+          // if node is not visited
+          if (!visitedNodes.has(adjencyNode)) {
+            // use recursion to reach at the depth of the graph
+            this.DFSHelper(adjencyNode, startingNode, visitedNodes, tin, low_tin, bridges);
+            
+            // after the completion of DFS traversal
+            // update Lowest time of Insertion of the starting Node
+            low_tin[startingNode] = Math.min(low_tin[startingNode], low_tin[adjencyNode]);
+            
+            // If the Lowest time of Insertion value of a neighbor
+            // is greater than the Insertion time of the current node (starting node), 
+            // it means there is no back edge, indicating a bridge.
+            if (low_tin[adjencyNode] > tin[startingNode]) {
+              bridges.push({ edge1: adjencyNode, edge2: startingNode });
+            }
+          } 
+          // If adjacency node is already visited, it is in the same path.
+          // Thus update the lowest time of insertion only.
+          else {
+            low_tin[startingNode] = Math.min(low_tin[startingNode], low_tin[adjencyNode]);
+          }
+        }
+      }
+    }
+    
+    let graph = new Graph();
+    
+    graph.addVertex(0);
+    graph.addVertex(1);
+    graph.addVertex(2);
+    graph.addVertex(3);
+    graph.addVertex(4);
+    graph.addVertex(5);
+    graph.addVertex(6);
+    
+    graph.addEdges(0, 1);
+    graph.addEdges(1, 2);
+    graph.addEdges(2, 0);
+    graph.addEdges(1, 3);
+    graph.addEdges(1, 4);
+    graph.addEdges(1, 6);
+    graph.addEdges(3, 5);
+    graph.addEdges(4, 5);
+    
+    
+    console.log("Bridges in the Graph:");
+    const bridges = graph.findBridges(0);
+    
+    for (let bridge of bridges) {
+      console.log(bridge);
+    }
      ```
      </p>
   </details>
